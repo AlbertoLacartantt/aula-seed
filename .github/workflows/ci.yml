@@ -1,0 +1,26 @@
+name: ci                      
+on:                                          #Cuando se ejecuta ( PR en el main )
+ pull_request:
+   branches: [ "main" ]
+jobs:                                        # Distintos trabajos
+ tests:
+   runs-on: ubuntu-latest                    # Maquina con la que se ejecuta
+   steps:
+     - uses: actions/checkout@v7             # Instalar codigo 
+     - uses: actions/setup-python@v7         # Instalar python 
+       with:
+         python-version: "3.11"
+     - run: python -m pip install -r requirements.txt   # Instala dependencias
+     - run: python -m pytest tests/ -q                  # Ejecuta test
+ tamano-pr:
+   runs-on: ubuntu-latest
+   env:
+     LIMITE_LINEAS: 400
+     ADICIONES: ${{ github.event.pull_request.additions }}
+     BORRADOS: ${{ github.event.pull_request.deletions }}
+   steps:
+     - run: |
+         TOTAL=$((ADICIONES + BORRADOS))
+         if [ "$TOTAL" -gt "$LIMITE_LINEAS" ]; then
+           exit 1
+         fi
