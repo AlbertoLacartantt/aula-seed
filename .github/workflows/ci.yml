@@ -24,9 +24,9 @@ jobs:                                        # Distintos trabajos
          if [ "$TOTAL" -gt "$LIMITE_LINEAS" ]; then
            exit 1
          fi
- imagen:
-   runs-on: ubuntu-latest
-   needs: tests                              # Solo si los tests pasan
-   steps:
-     - uses: actions/checkout@v7
-     - run: docker build -t aula:ci .        # Construye la imagen del Containerfile
+   imagen:
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - uses: actions/checkout@v7
+      - run: docker build -t aula:ci .
