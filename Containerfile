@@ -1,7 +1,7 @@
 # Etapa 1: instala las dependencias en un entorno virtual aislado.
 FROM python:3.11-slim AS construccion
 
-WORKDIR /app  #Fija la caroeta de trabajo
+WORKDIR /app  
 
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
@@ -19,7 +19,7 @@ COPY --from=construccion /opt/venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH" \
     PYTHONPATH=/app/src \
     PYTHONDONTWRITEBYTECODE=1 \
-    PYTHONUNBUFFERED=1   #Imprime lo que salga de la app en los logs inmediatamente 
+    PYTHONUNBUFFERED=1   
 
 COPY src/ ./src/
 COPY datos/ ./datos/
