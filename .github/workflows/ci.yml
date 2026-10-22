@@ -29,4 +29,5 @@ jobs:                                        # Distintos trabajos
    needs: tests                             
    steps:
      - uses: actions/checkout@v7
-     - run: docker build -t aula:ci.erfile
+     - run: docker build -t aula:ci .
+
