@@ -50,7 +50,7 @@ La decisión debe quedar auditada con la versión de plan aplicada.
 
 ## Fuera de alcance
 
-Rutas: src/aula/reglas/motor.py, src/aula/dominio/, tests/test_reglas_matricula.py, specs/SPEC-001-matricula.md
+Rutas: src/aula/reglas/motor.py, src/aula/dominio/, src/aula/api/app.py, tests/test_reglas_matricula.py, tests/test_api_matriculas.py, specs/SPEC-001-matricula.md
 
 - Pago de tasas y su conciliación.
 - Reserva y gestión de plazas de la lista de espera a lo largo del curso.
@@ -72,3 +72,7 @@ Rutas: src/aula/reglas/motor.py, src/aula/dominio/, tests/test_reglas_matricula.
 | A-08 | No está definido qué hacer con un código que no pertenece al plan, ni con una lista vacía o con duplicados | Pendiente de validar. Propuesta implementada: el código ajeno al plan es una línea rechazada (respeta INV-02); lista vacía o con duplicados lanza ValueError tras escribir la auditoría (respeta INV-01) | 2026-10 |
 | A-09 | No está definido el estado de la matrícula que devuelve la evaluación | Pendiente de validar. Propuesta implementada: SOLICITADA; el paso a VALIDADA es una transición posterior | 2026-10 |
 | A-10 | Al ordenar solicitudes, no está definido qué hacer si un estudiante no tiene expediente | Pendiente de validar. Propuesta implementada: se trata como nuevo ingreso, con 0 créditos superados | 2026-10 |
+| A-11 | El endpoint de alta no define de dónde sale el expediente del estudiante | Pendiente de validar. Propuesta implementada: almacén de expedientes en memoria, vacío al arrancar; un estudiante ausente es nuevo ingreso | 2026-10 |
+| A-12 | El endpoint no define qué ventana, plan ni grupos aplicar | Pendiente de validar. Propuesta implementada: ventana fija de 2026-09-01T00:00:00 a 2026-09-30T23:59:59; plan PLAN-2024; sin grupos (sin límite de plazas) | 2026-10 |
+| A-13 | El momento de la solicitud es opcional en la API y no está definido qué hacer si falta o llega con zona horaria | Pendiente de validar. Propuesta implementada: si falta se usa la hora local del servidor sin zona; si no es ISO-8601 o lleva zona horaria se responde 422 | 2026-10 |
+| A-14 | No están definidas las respuestas HTTP ni qué se guarda | Pendiente de validar. Propuesta implementada: 201 con la matrícula, que se guarda en memoria por estudiante; 409 si la ventana está cerrada; 422 si la solicitud es inválida | 2026-10 |
