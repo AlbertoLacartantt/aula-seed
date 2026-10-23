@@ -11,7 +11,7 @@ jobs:                                        # Distintos trabajos
        with:
          python-version: "3.11"
      - run: python -m pip install -r requirements.txt   # Instala dependencias
-     - run: python -m pytest tests/ -q                  # Ejecuta test
+     - run: python -m pytest tests/ -q --cov=src/aula/dominio --cov-report=term-missing --cov-fail-under=60   # Ejecuta test y exige cobertura del dominio >= 60%
  tamano-pr:
    runs-on: ubuntu-latest
    env:
