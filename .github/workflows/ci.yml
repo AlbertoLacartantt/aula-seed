@@ -27,7 +27,14 @@ jobs:                                        # Distintos trabajos
  imagen:
    runs-on: ubuntu-latest
    needs: tests                             
+   permissions:
+     contents: read
+     packages: write
    steps:
      - uses: actions/checkout@v7
-     - run: docker build -t aula:ci .
+     - run: docker build -f Containerfile -t ghcr.io/albertolacartantt/aula-seed:${{ github.sha }} .
+     - env:
+         TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       run: echo "$TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
+     - run: docker push ghcr.io/albertolacartantt/aula-seed:${{ github.sha }}
 
