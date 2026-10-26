@@ -8,6 +8,7 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 from ..dominio.modelos import Expediente, SolicitudMatricula
+from ..reglas.media import resumen_expediente
 from ..reglas.motor import VentanaCerrada, VentanaMatricula, evaluar_solicitud
 from ..reglas.planes import cargar_plan
 
@@ -64,4 +65,10 @@ def crear_matricula(entrada: SolicitudEntrada):
 
 @app.get("/expedientes/{estudiante_id}")
 def ver_expediente(estudiante_id: str):
-    raise HTTPException(status_code=501, detail="S2: consulta de expediente pendiente")
+    """Resumen del expediente; los decimales van como texto para no perder precision (A-04)."""
+    expediente = EXPEDIENTES.get(estudiante_id)
+    if expediente is None:
+        raise HTTPException(status_code=404, detail="expediente no encontrado")
+    resumen = resumen_expediente(expediente, PLAN)
+    return {**resumen, "nota_media": str(resumen["nota_media"]),
+            "progreso": str(resumen["progreso"])}

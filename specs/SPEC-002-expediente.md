@@ -38,6 +38,7 @@ becas, así que la reproducibilidad exacta del número es un requisito, no un de
 - CA-05: dada una asignatura convalidada, cuando se calculan los créditos superados, entonces sus créditos sí cuentan como superados.
 - CA-06: dado un expediente, cuando se calcula el progreso, entonces es el porcentaje de créditos superados sobre los créditos del título, con dos decimales.
 - CA-07: dado un expediente sin ninguna asignatura computable, cuando se calcula la nota media, entonces devuelve 0,00 sin error.
+- CA-08: dado un estudiante, cuando se consulta su expediente en la API, entonces devuelve el resumen con la nota media y el progreso con dos decimales; si el estudiante no tiene expediente, responde 404 (A-04).
 
 ## Casos límite
 
@@ -51,7 +52,7 @@ becas, así que la reproducibilidad exacta del número es un requisito, no un de
 
 ## Fuera de alcance
 
-Rutas: src/aula/reglas/media.py, tests/test_media_expediente.py, specs/SPEC-002-expediente.md
+Rutas: src/aula/reglas/media.py, src/aula/api/app.py, tests/test_media_expediente.py, tests/test_api_expedientes.py, specs/SPEC-002-expediente.md
 
 - Menciones, matrículas de honor y premios extraordinarios.
 - Reconocimiento de créditos por actividades no académicas.
@@ -65,4 +66,4 @@ Rutas: src/aula/reglas/media.py, tests/test_media_expediente.py, specs/SPEC-002-
 | A-01 | CA-02 decía "conforme a la normativa vigente" sin decir qué nota cuenta en una asignatura repetida, ni cuál si se aprueba dos veces | Pendiente de validar con el mentor. Solo cuenta la nota con la que aprobó; si aprobó más de una vez, la de la última convocatoria. Los suspensos y no presentados no cuentan | Contar todos los intentos: castiga haber repetido. Quedarse con la mejor nota o con la primera aprobada: nadie lo ha pedido |
 | A-02 | CA-03 decía "el tratamiento previsto" sin decir cómo cuenta una asignatura convalidada en la nota media | Pendiente de validar con el mentor. La convalidada no cuenta para la media, ni su nota ni sus créditos. Sus créditos sí cuentan como superados (CA-05) | Ponerle un 5,00 fijo: es inventarse una nota. Sumar su nota pero no sus créditos: la media puede salir por encima de 10 |
 | A-03 | La tabla de salidas dice que el progreso va con dos decimales, pero no dice cómo se redondea | Pendiente de validar con el mentor. Se redondea igual que la nota media: si queda justo en la mitad, hacia arriba (3,125 % da 3,13 %) | Redondear hacia abajo o al par más cercano: la nota media ya redondea hacia arriba, y usar dos formas distintas en el mismo expediente confunde |
-| A-04 | La spec no dice qué devuelve el resumen del expediente ni cómo se cuentan las convocatorias de cada asignatura | Pendiente de validar con el mentor. El resumen devuelve el estudiante, la nota media, los créditos superados, el progreso y las convocatorias de cada asignatura. Solo salen las asignaturas que tienen algún registro, y una convalidación no gasta convocatoria | Sacar todas las asignaturas del plan aunque no tengan registros: llena la respuesta de ceros que no aportan nada. Contar la convalidación como convocatoria: no es un examen, y el modelo ya no la cuenta (`convocatorias_consumidas`) |
+| A-04 | La spec no dice qué devuelve el resumen del expediente ni cómo se cuentan las convocatorias de cada asignatura | Pendiente de validar con el mentor. El resumen devuelve el estudiante, la nota media, los créditos superados, el progreso y las convocatorias de cada asignatura. Solo salen las asignaturas que tienen algún registro, y una convalidación no gasta convocatoria. En la API, la nota media y el progreso van como texto ("8.20") para no perder los dos decimales; los expedientes son los que guarda la API en memoria (A-11 de SPEC-001) y un estudiante sin expediente da 404 | Sacar todas las asignaturas del plan aunque no tengan registros: llena la respuesta de ceros que no aportan nada. Contar la convalidación como convocatoria: no es un examen, y el modelo ya no la cuenta (`convocatorias_consumidas`) |
