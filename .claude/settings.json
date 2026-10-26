@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(python -m pytest:*)"
+    ],
+    "deny": [
+      "Edit(src/aula/legado/**)",
+      "Edit(manifiestos/**)",
+      "Edit(.github/workflows/**)",
+      "Edit(labs/*/verificar.py)",
+      "Edit(evals/dorado*/**)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/rutas_prohibidas.py\""
+          }
+        ]
+      }
+    ]
+  }
+}
