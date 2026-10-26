@@ -32,8 +32,8 @@ becas, así que la reproducibilidad exacta del número es un requisito, no un de
 ## Criterios de aceptación
 
 - CA-01: dado un expediente con asignaturas aprobadas en primera convocatoria, cuando se calcula la nota media, entonces es la media de las notas ponderada por los créditos de cada asignatura, con dos decimales.
-- CA-02: dada una asignatura repetida y finalmente aprobada, cuando se calcula la nota media, entonces su calificación se incorpora conforme a la normativa académica vigente.
-- CA-03: dada una asignatura convalidada, cuando se calcula la nota media, entonces recibe el tratamiento previsto para las convalidaciones.
+- CA-02: dada una asignatura repetida y finalmente aprobada, cuando se calcula la nota media, entonces solo cuenta la nota del aprobado de mayor convocatoria; los suspensos y no presentados no cuentan (A-01).
+- CA-03: dada una asignatura convalidada, cuando se calcula la nota media, entonces no cuenta para la nota media: ni su nota ni sus créditos entran en el cálculo (A-02).
 - CA-04: dado cualquier expediente, cuando se calcula la nota media, entonces el redondeo a dos decimales se aplica una sola vez sobre el cociente final y nunca sobre cada asignatura.
 - CA-05: dada una asignatura convalidada, cuando se calculan los créditos superados, entonces sus créditos sí cuentan como superados.
 - CA-06: dado un expediente, cuando se calcula el progreso, entonces es el porcentaje de créditos superados sobre los créditos del título, con dos decimales.
@@ -44,8 +44,8 @@ becas, así que la reproducibilidad exacta del número es un requisito, no un de
 | Caso | Resultado esperado |
 |------|--------------------|
 | Expediente vacío | Nota media 0,00, créditos 0, progreso 0,00 |
-| Todas las asignaturas convalidadas | Por acordar antes de implementar |
-| Asignatura aprobada en convocatoria 2 y también en convocatoria 4 | Por acordar antes de implementar |
+| Todas las asignaturas convalidadas | Nota media 0,00, porque ninguna cuenta para la media. Sus créditos sí cuentan como superados |
+| Asignatura aprobada en convocatoria 2 y también en convocatoria 4 | Cuenta la nota de la convocatoria 4, aunque en el expediente aparezca antes la de la 2 |
 | Nota con más de dos decimales en origen | Se conserva íntegra en el numerador y solo se redondea el cociente final |
 | Media exactamente en el punto medio, por ejemplo 7,005 | Redondeo half-up a 7,01 |
 
@@ -62,3 +62,5 @@ Rutas: src/aula/reglas/media.py, tests/test_media_expediente.py, specs/SPEC-002-
 
 | # | Ambigüedad | Resolución adoptada | Alternativas descartadas y por qué |
 |---|-----------|---------------------|-------------------------------------|
+| A-01 | CA-02 decía "conforme a la normativa vigente" sin decir qué nota cuenta en una asignatura repetida, ni cuál si se aprueba dos veces | Pendiente de validar con el mentor. Solo cuenta la nota con la que aprobó; si aprobó más de una vez, la de la última convocatoria. Los suspensos y no presentados no cuentan | Contar todos los intentos: castiga haber repetido. Quedarse con la mejor nota o con la primera aprobada: nadie lo ha pedido |
+| A-02 | CA-03 decía "el tratamiento previsto" sin decir cómo cuenta una asignatura convalidada en la nota media | Pendiente de validar con el mentor. La convalidada no cuenta para la media, ni su nota ni sus créditos. Sus créditos sí cuentan como superados (CA-05) | Ponerle un 5,00 fijo: es inventarse una nota. Sumar su nota pero no sus créditos: la media puede salir por encima de 10 |
