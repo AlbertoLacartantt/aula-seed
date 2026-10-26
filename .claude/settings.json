@@ -24,7 +24,28 @@
             "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/rutas_prohibidas.py\""
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/tests_antes_de_commit.py\""
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/.claude/hooks/formato.py\""
+          }
+        ]
       }
     ]
   }
 }
+
