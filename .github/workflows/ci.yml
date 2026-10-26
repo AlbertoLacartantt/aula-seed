@@ -12,6 +12,20 @@ jobs:                                        # Distintos trabajos
          python-version: "3.11"
      - run: python -m pip install -r requirements.txt   # Instala dependencias
      - run: python -m pytest tests/ -q --cov=src/aula/dominio --cov-report=term-missing --cov-fail-under=60   # Ejecuta test y exige cobertura del dominio >= 60%
+     - run: |                                # Falla si algun criterio de una spec activa no tiene test con cubre:
+         python - <<'EOF'
+         import sys
+         from agentes.mcp_aula.servidor import listar_specs, trazabilidad
+         fallos = 0
+         for spec in listar_specs()["specs"]:
+             if spec["estado"] != "activa":
+                 continue
+             t = trazabilidad({"spec_id": spec["id"]})
+             print(t["spec"], t["cobertura_pct"], "% sin cubrir:", t["sin_cubrir"])
+             if t["sin_cubrir"]:
+                 fallos += 1
+         sys.exit(fallos)
+         EOF
  tamano-pr:
    runs-on: ubuntu-latest
    env:
