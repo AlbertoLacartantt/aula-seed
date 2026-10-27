@@ -151,11 +151,30 @@ def trazabilidad(args: dict) -> dict:
 
 
 def resultado_tests(args: dict) -> dict:
-    raise NotImplementedError("S4a: ejecutar tests con limites de rutas y recursos")
+    ruta = (RAIZ / (args.get("ruta") or "tests")).resolve()
+    if not ruta.is_relative_to(RAIZ / "tests"):
+        return {"error": "solo se pueden ejecutar tests de la carpeta tests/"}
+    try:
+        p = subprocess.run([sys.executable, "-m", "pytest", str(ruta), "-q", "-rf"],
+                           cwd=RAIZ, capture_output=True, text=True, timeout=300)
+    except subprocess.TimeoutExpired:
+        return {"error": "los tests han superado el tiempo maximo de 300 s"}
+    lineas = p.stdout.strip().splitlines()
+    return {
+        "verde": p.returncode == 0,
+        "resumen": lineas[-1] if lineas else "sin salida",
+        "fallidos": [linea.split()[1] for linea in lineas if linea.startswith("FAILED ")],
+    }
+
 
 
 def version_plan(args: dict) -> dict:
-    raise NotImplementedError("S4a: exponer version y parametros del plan")
+    ruta = RAIZ / "datos" / "planes" / ("%s.json" % args["codigo"].upper())
+    if not ruta.is_file():
+        return {"error": "plan %s no encontrado" % args["codigo"]}
+    plan = json.loads(ruta.read_text(encoding="utf-8"))
+    return plan
+
 
 
 IMPLEMENTACION = {
@@ -170,7 +189,24 @@ IMPLEMENTACION = {
 # --- transporte JSON-RPC sobre stdio ------------------------------------------
 
 def manejar(mensaje: dict):
-    raise NotImplementedError("S4a: implementar initialize, tools/list y tools/call")
+    ident = mensaje.get("id")
+    metodo = mensaje.get("method")
+    if metodo == "initialize":
+        return _ok(ident, {"protocolVersion": PROTOCOLO, "capabilities": {"tools": {}},
+                           "serverInfo": {"name": "aula-contexto", "version": "1.0.0"}})
+    if metodo == "tools/list":
+        return _ok(ident, {"tools": HERRAMIENTAS})
+    if metodo == "tools/call":
+        nombre = mensaje["params"]["name"]
+        if nombre not in IMPLEMENTACION:
+            return _error(ident, -32602, "herramienta desconocida: %s" % nombre)
+        resultado = IMPLEMENTACION[nombre](mensaje["params"].get("arguments", {}))
+        return _ok(ident, {"content": [{"type": "text",
+                                        "text": json.dumps(resultado, ensure_ascii=False)}]})
+    if ident is None:
+        return None
+    return _error(ident, -32601, "metodo no soportado: %s" % metodo)
+
 
 
 def _ok(ident, resultado):
@@ -182,8 +218,12 @@ def _error(ident, codigo, mensaje):
 
 
 def principal():
-    raise NotImplementedError("S4a: implementar transporte JSON-RPC por stdio")
-
+    for linea in sys.stdin:
+        if not linea.strip():
+            continue
+        respuesta = manejar(json.loads(linea))
+        if respuesta is not None:
+            print(json.dumps(respuesta), flush=True)
 
 if __name__ == "__main__":
     principal()
