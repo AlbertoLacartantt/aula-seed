@@ -39,6 +39,7 @@ becas, así que la reproducibilidad exacta del número es un requisito, no un de
 - CA-06: dado un expediente, cuando se calcula el progreso, entonces es el porcentaje de créditos superados sobre los créditos del título, con dos decimales.
 - CA-07: dado un expediente sin ninguna asignatura computable, cuando se calcula la nota media, entonces devuelve 0,00 sin error.
 - CA-08: dado un estudiante, cuando se consulta su expediente en la API, entonces devuelve el resumen con la nota media y el progreso con dos decimales; si el estudiante no tiene expediente, responde 404 (A-04).
+- CA-09: dado un expediente, cuando se calculan las convocatorias por asignatura, entonces solo aparecen las asignaturas que tienen algún registro, cada una con el número de convocatorias consumidas, y una convalidación no gasta convocatoria, de modo que una asignatura cuyo único registro es una convalidación aparece con 0 convocatorias (A-04).
 
 ## Casos límite
 
