@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "aula-contexto": {
+      "command": ".venv/Scripts/python.exe",
+      "args": ["-m", "agentes.mcp_aula.servidor"]
+    }
+  }
+}
