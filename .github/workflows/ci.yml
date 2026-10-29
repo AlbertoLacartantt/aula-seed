@@ -51,7 +51,7 @@ jobs:                                        # Distintos trabajos
          TOKEN: ${{ secrets.GITHUB_TOKEN }}
        run: echo "$TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
      - run: docker push ghcr.io/albertolacartantt/aula-seed:${{ github.sha }}
-conformidad:
+ conformidad:
    runs-on: ubuntu-latest
    permissions:
      contents: read
