@@ -36,7 +36,7 @@ class Veredicto:
 def _tests(pr: dict) -> list:
     salida = []
     for fichero in pr["ficheros"]:
-        if fichero[" "].startswith("tests/"):
+        if fichero["ruta"].startswith("tests/"):
             for m in PATRON_TEST.finditer(fichero["contenido"]):
                 salida.append({"ruta": fichero["ruta"], "nombre": m.group(2), "texto": m.group(0)})
     return salida
