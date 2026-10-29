@@ -1,0 +1,35 @@
+{
+  "servidor_mcp": "agentes/mcp_aula/servidor.py",
+  "agentes": {
+    "conformidad": {
+      "codigo": "agentes/conformidad/agente.py",
+      "entradas": ["PR en JSON (id, ficheros, criterios_declarados)", "id de la spec"],
+      "herramientas_mcp": ["obtener_spec"],
+      "salidas": ["veredicto JSON"],
+      "escribe_en": "labs/S4b-flotilla/ciclo/conformidad.json"
+    },
+    "triaje": {
+      "codigo": "agentes/triaje/agente.py",
+      "entradas": ["ruta de tests (por defecto tests/)"],
+      "herramientas_mcp": ["resultado_tests", "listar_specs", "trazabilidad"],
+      "salidas": ["diagnostico JSON: tests que fallan y criterios afectados"],
+      "escribe_en": "labs/S4b-flotilla/ciclo/triaje.json"
+    },
+    "modernizacion": {
+      "codigo": "agentes/modernizacion/agente.py",
+      "entradas": ["ruta de un modulo .py"],
+      "herramientas_mcp": ["resultado_tests"],
+      "salidas": ["propuesta JSON: mejoras detectadas y si el modulo tiene caracterizacion en verde"],
+      "escribe_en": "labs/S4b-flotilla/ciclo/modernizacion.json"
+    }
+  },
+  "handoffs": [
+    {"de": "conformidad", "a": "triaje", "pasa": "spec y criterios cubiertos, para comprobar que sus tests pasan"},
+    {"de": "triaje", "a": "modernizacion", "pasa": "ficheros de src/ de la spec con criterios en riesgo"},
+    {"de": "modernizacion", "a": "humano", "pasa": "la propuesta, que ningun agente aplica"}
+  ],
+  "conflicto": {
+    "prevencion": "cada agente escribe solo en su escribe_en y ninguno modifica src/, tests/ ni specs/",
+    "si_dos_tocan_el_mismo_fichero": "no se aplica ningun cambio y decide el humano"
+  }
+}
