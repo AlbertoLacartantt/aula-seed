@@ -51,4 +51,26 @@ jobs:                                        # Distintos trabajos
          TOKEN: ${{ secrets.GITHUB_TOKEN }}
        run: echo "$TOKEN" | docker login ghcr.io -u "${{ github.actor }}" --password-stdin
      - run: docker push ghcr.io/albertolacartantt/aula-seed:${{ github.sha }}
+conformidad:
+   runs-on: ubuntu-latest
+   permissions:
+     contents: read
+     pull-requests: write
+   steps:
+     - uses: actions/checkout@v7
+       with:
+         fetch-depth: 0
+     - uses: actions/setup-python@v7
+       with:
+         python-version: "3.11"
+     - env:
+         CUERPO: ${{ github.event.pull_request.body }}
+       run: printf '%s\n' "$CUERPO" | tr -d '\r' > cuerpo.md
+     - run: python -m herramientas.conformidad_pr --base origin/main --cuerpo cuerpo.md > veredicto.txt || true
+     - env:
+         GH_TOKEN: ${{ github.token }}
+       run: |
+         { echo '### Veredicto del agente de conformidad'; echo '```json'; cat veredicto.txt; echo '```'; } > comentario.md
+         gh pr comment ${{ github.event.pull_request.number }} --body-file comentario.md
+
 

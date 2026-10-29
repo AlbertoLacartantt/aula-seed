@@ -1,3 +1,8 @@
+## Spec
+<!-- Las lee el agente de conformidad. Ejemplo: SPEC-002 y CA-01, CA-02 -->
+AULA_SPEC_ID: SPEC-nnn
+AULA_CRITERIOS: CA-nn
+
 ## Checklist de revisión
 - [ ] 1. ¿Cada criterio de aceptación tocado tiene test que lo referencia?
 - [ ] 2. ¿Los tests fallan si rompo la implementación a propósito?
