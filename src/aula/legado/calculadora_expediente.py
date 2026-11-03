@@ -17,18 +17,11 @@
 
 import json
 
-APROBADO = 5.0
+
 NOTA_CONVALIDADA = 5.0
 DEC = 2
 MAX_CONV = 6
 _CACHE = {}
-DEBUG = False
-
-
-def _log(msg):
-    if DEBUG:
-        print("[calc] " + str(msg))
-
 
 def cargar_plan(ruta):
     f = open(ruta, "r", encoding="utf-8")
@@ -156,7 +149,6 @@ def calcular(expediente, ruta_plan):
     # punto de entrada historico. lo llama el proceso nocturno de secretaria.
     key = expediente["estudiante_id"] + "|" + ruta_plan
     if key in _CACHE:
-        _log("cache hit " + key)
         return _CACHE[key]
     plan, mapa = cargar_plan(ruta_plan)
     res = {}
@@ -174,28 +166,3 @@ def calcular_lote(expedientes, ruta_plan):
         out.append(calcular(e, ruta_plan))
     return out
 
-
-# --- codigo muerto: quedo de la migracion de 2020, no lo llama nadie ---
-
-def media_simple(expediente):
-    s = 0.0
-    n = 0
-    for reg in expediente["registros"]:
-        if reg.get("nota") is not None:
-            s = s + float(reg["nota"])
-            n = n + 1
-    if n == 0:
-        return 0.0
-    return round(s / n, DEC)
-
-
-def formatea(res):
-    return "%s;%s;%s" % (res["estudiante_id"], res["nota_media"], res["creditos_superados"])
-
-
-def exporta_csv(resultados, ruta):
-    f = open(ruta, "w", encoding="utf-8")
-    for r in resultados:
-        f.write(formatea(r) + "\n")
-    f.close()
-    return ruta
