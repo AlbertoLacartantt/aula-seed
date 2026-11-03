@@ -2,6 +2,7 @@ agente: conformidad-spec
 version: 1.0.0
 propietario_humano: AlbertoLacartantt
 nivel_autonomia: N3
+control: el job conformidad de ci.yml solo tiene permisos contents read y pull-requests write; comenta el PR pero no puede cambiar codigo ni mergear
 herramientas:
   - obtener_spec
 evaluacion:

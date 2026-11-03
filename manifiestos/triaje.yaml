@@ -2,6 +2,7 @@ agente: triaje
 version: 1.0.0
 propietario_humano: AlbertoLacartantt
 nivel_autonomia: N1
+control: no corre en el CI, lo lanza un humano; solo ejecuta tests de tests/ via MCP y cualquier cambio en su codigo lo bloquea el gate por hash
 herramientas:
   - resultado_tests
   - listar_specs
