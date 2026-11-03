@@ -49,7 +49,7 @@ def _sospechoso(texto: str) -> bool:
         return True
     return "assert" not in texto and "pytest.raises" not in texto
 
-
+# Busca que AC cubre un test de una spec en conreto 
 def _cubre(texto: str, spec_id: str) -> list:
     doc = re.search(r'"""(.*?)"""', texto, re.S)
     if not doc:
