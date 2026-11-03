@@ -1,0 +1,19 @@
+agente: modernizacion
+version: 1.0.0
+propietario_humano: AlbertoLacartantt
+nivel_autonomia: N1
+herramientas:
+  - resultado_tests
+evaluacion:
+  fecha: 2026-10-30
+  informe: labs/S4b-flotilla/ciclo/modernizacion.json
+  tipo: ciclo funcional de la flotilla, sin conjunto dorado
+  caducidad_dias: 30
+coste:
+  tokens_por_ejecucion: 0
+  usd_por_ejecucion: 0.0
+  modelo: ninguno, determinista sin LLM
+reversion: git revert del commit del agente. No corre en el CI, se ejecuta a mano.
+codigo:
+  ruta: agentes/modernizacion/agente.py
+  hash_sha256: ff1eaeedf3d4c07837d94c336fdcadaaac6763590a6dd6755b94a6f568b55c59

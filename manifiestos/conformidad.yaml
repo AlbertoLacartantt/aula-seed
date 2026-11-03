@@ -1,0 +1,20 @@
+agente: conformidad-spec
+version: 1.0.0
+propietario_humano: AlbertoLacartantt
+nivel_autonomia: N3
+herramientas:
+  - obtener_spec
+evaluacion:
+  fecha: 2026-10-29
+  informe: evals/informes/evaluacion-20261029-161307.json
+  precision: 1.0
+  recall: 0.9
+  caducidad_dias: 30
+coste:
+  tokens_por_ejecucion: 0
+  usd_por_ejecucion: 0.0
+  modelo: ninguno, determinista sin LLM
+reversion: git revert del commit del agente. En el CI solo comenta el PR, no bloquea el merge.
+codigo:
+  ruta: agentes/conformidad/agente.py
+  hash_sha256: c3bb7773f6973cee674d1c8a36b0335ec914df0ba7b09adb2c12a979899f3713

@@ -1,0 +1,21 @@
+agente: triaje
+version: 1.0.0
+propietario_humano: AlbertoLacartantt
+nivel_autonomia: N1
+herramientas:
+  - resultado_tests
+  - listar_specs
+  - trazabilidad
+evaluacion:
+  fecha: 2026-10-30
+  informe: labs/S4b-flotilla/ciclo/triaje.json
+  tipo: ciclo funcional de la flotilla, sin conjunto dorado
+  caducidad_dias: 30
+coste:
+  tokens_por_ejecucion: 0
+  usd_por_ejecucion: 0.0
+  modelo: ninguno, determinista sin LLM
+reversion: git revert del commit del agente. No corre en el CI, se ejecuta a mano.
+codigo:
+  ruta: agentes/triaje/agente.py
+  hash_sha256: 5396fd74f1b7fa219ab90fe50052161d3b12b063a40f20c066d399bd2e39ee10
