@@ -59,24 +59,24 @@
     "S4b": {
       "estado": "sellada",
       "pistas": 0,
-      "intentos": 1,
+      "intentos": 2,
       "predicciones": {
-        "aciertos": 1,
-        "total": 1
+        "aciertos": 2,
+        "total": 2
       },
       "desbloqueada": false,
-      "sellada": "2026-11-03T08:09:20+00:00"
+      "sellada": "2026-11-03T11:11:04+00:00"
     },
     "S5": {
-      "estado": "en curso",
+      "estado": "sellada",
       "pistas": 0,
-      "intentos": 1,
+      "intentos": 2,
       "predicciones": {
-        "aciertos": 0,
-        "total": 1
+        "aciertos": 1,
+        "total": 2
       },
       "desbloqueada": false,
-      "sellada": null
+      "sellada": "2026-11-03T11:08:55+00:00"
     }
   },
   "creado": "2026-10-07T09:43:16+00:00"

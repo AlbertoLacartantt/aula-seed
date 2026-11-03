@@ -1,0 +1,21 @@
+﻿{
+  "verde": false,
+  "resumen": "2 failed, 45 passed, 1 warning in 1.82s",
+  "fallos": [
+    {
+      "test": "tests/test_media_expediente.py::test_punto_medio_redondea_hacia_arriba",
+      "fichero": "tests/test_media_expediente.py",
+      "criterios": [
+        "SPEC-002/CA-01"
+      ]
+    },
+    {
+      "test": "tests/test_media_expediente.py::test_redondeo_una_sola_vez_al_final",
+      "fichero": "tests/test_media_expediente.py",
+      "criterios": [
+        "SPEC-002/CA-04",
+        "SPEC-002/INV-01"
+      ]
+    }
+  ]
+}

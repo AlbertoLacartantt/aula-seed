@@ -1,0 +1,15 @@
+﻿{
+  "pr": "pr",
+  "spec": "SPEC-002",
+  "veredicto": "no_conforme",
+  "criterios_declarados": [
+    "CA-01"
+  ],
+  "criterios_cubiertos": [],
+  "criterios_sin_cubrir": [
+    "CA-01"
+  ],
+  "fuera_de_alcance": [],
+  "hallazgos": [],
+  "explicacion": "sin test: CA-01"
+}
