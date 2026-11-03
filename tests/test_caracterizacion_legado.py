@@ -106,12 +106,14 @@ def test_convocatorias_no_cuentan_convalidadas_y_limitan_la_matricula(modulo):
 
 def test_calcular_devuelve_el_resumen_y_redondea_en_coma_flotante(modulo):
     resultado = modulo.calcular(exp(reg("MAT101", "aprobada", 7.0), estudiante="EST-1"), RUTA_PLAN)
-    # 6*100/192 = 3.125; el round() de float da 3.12, no 3.13
+    # 6*100/192 = 3.125: el round() de float del legado da 3.12; el refactor en Decimal
+    # da 3.13 (desviacion D-02, declarada en DESVIACIONES.md)
+    progreso = Decimal("3.12") if modulo is legado else Decimal("3.13")
     assert set(resultado) == {"estudiante_id", "nota_media", "creditos_superados", "progreso_pct"}
     assert resultado["estudiante_id"] == "EST-1"
     assert dec(resultado["nota_media"]) == Decimal("7.0")
     assert resultado["creditos_superados"] == 6
-    assert dec(resultado["progreso_pct"]) == Decimal("3.12")
+    assert dec(resultado["progreso_pct"]) == progreso
 
 
 def test_calcular_cachea_por_estudiante_y_plan_aunque_cambie_el_expediente(modulo):

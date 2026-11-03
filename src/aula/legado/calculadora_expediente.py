@@ -1,15 +1,22 @@
 """Calculadora de expediente: refactor de calculadora_expediente_v1.
 
 Mismo comportamiento que el legado, incluidos los dos no documentados de los que
-depende la ordenacion de becas. Lo llama el proceso nocturno de secretaria.
+depende la ordenacion de becas, pero calculado en Decimal (invariante 2 de CLAUDE.md).
+Las diferencias con el legado estan declaradas en DESVIACIONES.md.
+Lo llama el proceso nocturno de secretaria.
 """
 
 import json
+from decimal import ROUND_HALF_UP, Decimal
 
-NOTA_CONVALIDADA = 5.0
-DECIMALES = 2
+NOTA_CONVALIDADA = Decimal("5.0")
+DOS_DECIMALES = Decimal("0.01")
 MAX_CONVOCATORIAS = 6
 _CACHE = {}
+
+
+def _redondear(valor):
+    return valor.quantize(DOS_DECIMALES, rounding=ROUND_HALF_UP)
 
 
 def cargar_plan(ruta):
@@ -44,12 +51,13 @@ def _nota_que_cuenta(registros):
     aprobados = [r for r in registros if r["estado"] == "aprobada"]
     if not aprobados:
         return None
-    return max(aprobados, key=lambda r: r["convocatoria"]).get("nota")
+    nota = max(aprobados, key=lambda r: r["convocatoria"]).get("nota")
+    return None if nota is None else Decimal(str(nota))
 
 
 def media(expediente, mapa):
-    numerador = 0.0
-    denominador = 0.0
+    numerador = Decimal(0)
+    denominador = 0
     for codigo in _codigos(expediente):
         creditos = _creditos(mapa, codigo)
         if creditos == 0:
@@ -63,11 +71,11 @@ def media(expediente, mapa):
         if nota is None:
             continue
         # No documentado 2: se redondea por asignatura, antes de acumular.
-        numerador += round(float(nota), DECIMALES) * creditos
+        numerador += _redondear(nota) * creditos
         denominador += creditos
     if denominador == 0:
-        return 0.0
-    return round(numerador / denominador, DECIMALES)
+        return Decimal("0.00")
+    return _redondear(numerador / denominador)
 
 
 def creditos_superados(expediente, mapa):
@@ -81,8 +89,8 @@ def creditos_superados(expediente, mapa):
 def progreso(expediente, plan, mapa):
     total = plan["creditos_titulo"]
     if total == 0:
-        return 0.0
-    return round(creditos_superados(expediente, mapa) * 100.0 / total, DECIMALES)
+        return Decimal("0.00")
+    return _redondear(Decimal(creditos_superados(expediente, mapa) * 100) / total)
 
 
 def convocatorias(expediente):
