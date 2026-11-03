@@ -41,3 +41,4 @@ def principal(argv=None):
 
 if __name__ == "__main__":
     raise SystemExit(principal())
+# prueba del gate: cambio sin actualizar el manifiesto
