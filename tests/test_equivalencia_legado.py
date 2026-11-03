@@ -5,17 +5,17 @@ expediente. Solo se admiten las desviaciones declaradas en
 src/aula/legado/DESVIACIONES.md; cualquier otra diferencia es un defecto.
 """
 
-import json
 from decimal import Decimal
 
 import pytest
 
 from aula.legado import calculadora_expediente as nuevo
 from aula.legado import calculadora_expediente_v1 as legado
+from herramientas.generar_corpus import generar
 from tests.utilidades import RAIZ
 
 RUTA_PLAN = str(RAIZ / "datos" / "planes" / "PLAN-2024.json")
-CORPUS = json.loads((RAIZ / "datos" / "expedientes_sinteticos.json").read_text(encoding="utf-8"))
+CORPUS = generar()
 CENTESIMA = Decimal("0.01")
 # Campo -> (desviacion declarada, expedientes del corpus que cambian)
 DESVIACIONES = {"nota_media": ("D-01", 29), "progreso_pct": ("D-02", 61)}
