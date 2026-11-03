@@ -9,3 +9,6 @@ Duracion crear test 40 minutos aproximadamente.
 
 2026-10-22, Comienzo alta matricula 8:40
             Fin alta matricula 13:30 con una hora y poco de reuniones por el medio 
+            Comienzo imagen ci 13:30
+            Imafen ci subida 14:48
+    
