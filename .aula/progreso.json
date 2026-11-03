@@ -2,15 +2,15 @@
   "student": "sin-asignar",
   "estaciones": {
     "S1": {
-      "estado": "superable",
+      "estado": "sellada",
       "pistas": 0,
-      "intentos": 6,
+      "intentos": 11,
       "predicciones": {
-        "aciertos": 0,
-        "total": 0
+        "aciertos": 1,
+        "total": 2
       },
       "desbloqueada": false,
-      "sellada": null
+      "sellada": "2026-10-23T13:05:24+00:00"
     },
     "S0": {
       "estado": "sellada",
@@ -22,6 +22,61 @@
       },
       "desbloqueada": false,
       "sellada": "2026-10-22T07:27:19+00:00"
+    },
+    "S2": {
+      "estado": "sellada",
+      "pistas": 0,
+      "intentos": 1,
+      "predicciones": {
+        "aciertos": 1,
+        "total": 1
+      },
+      "desbloqueada": false,
+      "sellada": "2026-10-26T12:43:47+00:00"
+    },
+    "S3": {
+      "estado": "en curso",
+      "pistas": 0,
+      "intentos": 1,
+      "predicciones": {
+        "aciertos": 1,
+        "total": 1
+      },
+      "desbloqueada": false,
+      "sellada": null
+    },
+    "S4a": {
+      "estado": "sellada",
+      "pistas": 0,
+      "intentos": 1,
+      "predicciones": {
+        "aciertos": 1,
+        "total": 1
+      },
+      "desbloqueada": false,
+      "sellada": "2026-10-29T15:15:38+00:00"
+    },
+    "S4b": {
+      "estado": "sellada",
+      "pistas": 0,
+      "intentos": 1,
+      "predicciones": {
+        "aciertos": 1,
+        "total": 1
+      },
+      "desbloqueada": false,
+      "sellada": "2026-11-03T08:09:20+00:00"
+    },
+    "S5": {
+      "estado": "en curso",
+      "pistas": 0,
+      "intentos": 1,
+      "predicciones": {
+        "aciertos": 0,
+        "total": 1
+      },
+      "desbloqueada": false,
+      "sellada": null
     }
   },
   "creado": "2026-10-07T09:43:16+00:00"
