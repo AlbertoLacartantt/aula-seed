@@ -1,0 +1,23 @@
+﻿{
+  "modulo": "src/aula/reglas/media.py",
+  "caracterizacion": {
+    "tests": [
+      "tests/test_media_expediente.py"
+    ],
+    "verde": false
+  },
+  "se_puede_aplicar": false,
+  "motivo": "los tests del modulo no estan en verde: no se puede tocar",
+  "hallazgos": [
+    {
+      "linea": 44,
+      "tipo": "numero_magico",
+      "detalle": "100"
+    },
+    {
+      "linea": 55,
+      "tipo": "nombre_sin_uso",
+      "detalle": "resumen_expediente"
+    }
+  ]
+}
