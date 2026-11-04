@@ -1,0 +1,29 @@
+name: evidencia
+on:
+  pull_request:
+    branches: [ "main" ]
+permissions:
+  contents: read
+jobs:
+  paquete:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+      - run: python -m pip install -r requirements.txt
+      - run: mkdir evidencia
+      - run: python -m pytest tests/ -q --cov=src/aula --cov-report=term-missing > evidencia/tests-cobertura.txt || true
+      - env:
+          CUERPO: ${{ github.event.pull_request.body }}
+        run: printf '%s\n' "$CUERPO" | tr -d '\r' > cuerpo.md
+      - run: python -m herramientas.conformidad_pr --base origin/main --cuerpo cuerpo.md > evidencia/conformidad.txt || true
+      - run: python -m ruff check agentes src herramientas --select S --output-format concise > evidencia/seguridad.txt || true
+      - run: grep -A3 "^coste:" manifiestos/*.yaml > evidencia/coste.txt || true
+      - uses: actions/upload-artifact@v4
+        with:
+          name: evidencia-pr-${{ github.event.pull_request.number }}
+          path: evidencia/
