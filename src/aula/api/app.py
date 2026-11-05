@@ -1,10 +1,12 @@
 """Servicio de arranque. S1 y S2 completan los recursos pendientes."""
 from __future__ import annotations
 
+import logging
+import time
 from dataclasses import asdict
 from datetime import datetime, timezone
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 
 from ..dominio.modelos import Expediente, SolicitudMatricula
@@ -13,6 +15,29 @@ from ..reglas.motor import VentanaCerrada, VentanaMatricula, evaluar_solicitud
 from ..reglas.planes import cargar_plan
 
 app = FastAPI(title="Aula Students", version="0.0.0")
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+logger = logging.getLogger("aula.api")
+
+
+@app.middleware("http")
+async def registrar_peticion(request: Request, call_next):
+    inicio = time.perf_counter()
+    estado = 500
+    try:
+        respuesta = await call_next(request)
+        estado = respuesta.status_code
+        return respuesta
+    finally:
+        ruta = request.scope.get("route")
+        logger.info(
+            "metodo=%s ruta=%s estado=%s ms=%.1f",
+            request.method,
+            ruta.path if ruta else "desconocida",
+            estado,
+            (time.perf_counter() - inicio) * 1000,
+        )
+
 
 PLAN = cargar_plan("PLAN-2024")
 VENTANA = VentanaMatricula(inicio="2026-09-01T00:00:00", fin="2026-09-30T23:59:59")
